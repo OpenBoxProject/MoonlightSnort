@@ -1,0 +1,5 @@
+MOONLIGHT_PATH=../moonlight/target/classes
+
+mkdir classes
+javac -d classes -classpath $MOONLIGHT_PATH:lib/guava-18.0.jar src/org/moonlightcontroller/samples/Snort.java
+jar cvmf ../src/META-INF/services/org.moonlightcontroller.bal.BoxApplication MoonlightSnort.jar * ../lib
