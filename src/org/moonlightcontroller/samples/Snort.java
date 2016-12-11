@@ -162,7 +162,7 @@ public class Snort extends BoxApplication{
 		List<IConnector> connectors = new ArrayList<>();
 		List<IProcessingBlock> blocks = new ArrayList<>();
 		
-		blocks.addAll(ImmutableList.of(from, to, classify, discard));
+		blocks.addAll(ImmutableList.of(from, to, classify, discard, regex));
 		connectors.addAll(ImmutableList.of(
 			new Connector.Builder().setSourceBlock(from).setSourceOutputPort(0).setDestBlock(classify).build(),
 			new Connector.Builder().setSourceBlock(classify).setSourceOutputPort(0).setDestBlock(regex).build(),
