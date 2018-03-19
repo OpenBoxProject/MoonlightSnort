@@ -34,8 +34,8 @@ import org.openboxprotocol.protocol.IStatement;
 import org.openboxprotocol.protocol.OpenBoxHeaderMatch;
 import org.openboxprotocol.protocol.Priority;
 import org.openboxprotocol.protocol.Statement;
-import org.openboxprotocol.protocol.topology.IApplicationTopology;
-import org.openboxprotocol.protocol.topology.TopologyManager;
+import org.moonlightcontroller.topology.IApplicationTopology;
+import org.moonlightcontroller.topology.TopologyManager;
 import org.openboxprotocol.types.TransportPort;
 
 import com.google.common.collect.ImmutableList;
@@ -147,7 +147,7 @@ public class Snort extends BoxApplication{
 		ToDevice toDevice = new ToDevice("ToDevice_Snort", props.getProperty(PROP_OUT_IFC));
 		FromDump fromDump = new FromDump("FromDump_Snort", props.getProperty(PROP_IN_DUMP), false, true);
 		ToDump toDump = new ToDump("ToDump_Snort", props.getProperty(PROP_OUT_DUMP));
-		HeaderClassifier classify = new HeaderClassifier("HeaderClassifier_Snort", headerRules, Priority.HIGH);
+		HeaderClassifier classify = new HeaderClassifier("HeaderClassifier_Snort", headerRules, Priority.HIGH, true);
 		RegexClassifier regex = new RegexClassifier("RegexClassifier_Snort", regexRules, Priority.HIGH);
 		org.moonlightcontroller.blocks.Alert alert = 
 				new org.moonlightcontroller.blocks.Alert("Alert_Snort", "Alert from Snort", 1, true, 1000);
@@ -162,7 +162,7 @@ public class Snort extends BoxApplication{
 		List<IConnector> connectors = new ArrayList<>();
 		List<IProcessingBlock> blocks = new ArrayList<>();
 		
-		blocks.addAll(ImmutableList.of(from, to, classify, discard));
+		blocks.addAll(ImmutableList.of(from, to, regex, classify, discard));
 		connectors.addAll(ImmutableList.of(
 			new Connector.Builder().setSourceBlock(from).setSourceOutputPort(0).setDestBlock(classify).build(),
 			new Connector.Builder().setSourceBlock(classify).setSourceOutputPort(0).setDestBlock(regex).build(),
