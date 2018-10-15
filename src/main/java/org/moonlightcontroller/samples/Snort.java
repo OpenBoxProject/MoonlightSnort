@@ -1,9 +1,7 @@
 package org.moonlightcontroller.samples;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -86,11 +84,10 @@ public class Snort extends BoxApplication{
 		super("Snort");
 		
 		props = new Properties(DEFAULT_PROPS);
-		File f = new File(PROPERTIES_PATH);
 		try {
-			props.load(new FileReader(f));
+			props.load(this.getClass().getClassLoader().getResourceAsStream(PROPERTIES_PATH));
 		} catch (IOException e) {
-			LOG.severe("Cannot load properties file from path: " + f.getAbsolutePath());
+			LOG.severe("Cannot load properties file from path: " + PROPERTIES_PATH);
 			LOG.severe("Using default properties.");
 		}
 		LOG.info(String.format("Snort is running on Segment %s", props.getProperty(PROP_SEGMENT)));
@@ -111,12 +108,10 @@ public class Snort extends BoxApplication{
 	private List<String> readRules(String path) {
 		List<String> result = new ArrayList<>();
 		
-		File f = new File(path);
-		
 		BufferedReader reader = null;
 		String line;
 		try {
-			reader = new BufferedReader(new FileReader(f));
+			reader = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(path), StandardCharsets.UTF_8));
 			while ((line = reader.readLine()) != null) {
 				result.add(line);
 			}
